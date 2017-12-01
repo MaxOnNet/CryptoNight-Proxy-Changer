@@ -1,0 +1,16 @@
+[Unit]
+Description=CryptoNight Proxy GPU
+After=network.target network.service
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/xmr-proxy
+
+Type=forking
+ExecStart=/home/xmr-proxy/xmrig-proxy --syslog --config /home/xmr-proxy/config-gpu.json
+
+GuessMainPID=no
+
+[Install]
+WantedBy=multi-user.target

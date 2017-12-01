@@ -1,0 +1,27 @@
+{
+    "background": true,
+    "log-file": null,
+    "retries": 5,
+    "retry-pause": 5,
+    "syslog": true,
+    "verbose": true,
+    "pools": [
+        {
+            "url": "pool.sumokoin.lindon-pool.win:5556",
+            "user": "Sumoo2SeKjvBH8GsjixxSx9HghG6iqht4YqMYTy6qKwaDwPivoCQ5gYdYPBamdrvdGPYUEDpALTTVak9xSi6aS7k4E8sSinQsGi.100000",
+            "pass": "viktor@tatarnikov.org"
+        }
+    ],
+    "bind": [
+        "0.0.0.0:5566"
+    ],
+        "donate-level": 0,
+    "coin": "xmr",
+//    "custom-diff": 10000,
+    "workers": true,
+    "api": {
+        "port": 5567,
+        "access-token": null,
+        "worker-id": null
+    }
+}

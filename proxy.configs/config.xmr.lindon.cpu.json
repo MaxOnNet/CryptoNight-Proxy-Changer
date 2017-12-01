@@ -1,0 +1,31 @@
+{
+    "background": true,
+    "log-file": null,
+    "retries": 5,
+    "retry-pause": 5,
+    "syslog": true,
+    "verbose": false,
+    "pools": [
+        {
+            "url": "nn.monero.lindon-pool.win:5555",
+            "user": "45YW94hFNeeiCdLYnEkzxxceeeooej4ypX8zjeWdgsKsSyoi3gZRWRVfRJAbUpTNpdPwURUDARjaK569fTPKHnbcKyRSnEu+7000",
+            "pass": "node-proxy-cpu:viktor@tatarnikov.org"
+        },
+        {
+            "url": "monero.lindon-pool.win:5555",
+            "user": "45YW94hFNeeiCdLYnEkzxxceeeooej4ypX8zjeWdgsKsSyoi3gZRWRVfRJAbUpTNpdPwURUDARjaK569fTPKHnbcKyRSnEu+7000",
+            "pass": "node-proxy-cpu:viktor@tatarnikov.org"
+        }
+    ],
+    "bind": [
+        "0.0.0.0:5556"
+    ],
+    "donate-level": 0,
+    "coin": "xmr",
+    "workers": true,
+    "api": {
+        "port": 5557,
+        "access-token": null,
+        "worker-id": null
+    }
+}

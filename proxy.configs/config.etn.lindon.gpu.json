@@ -1,0 +1,26 @@
+{
+    "background": true,
+    "log-file": null,
+    "retries": 5,
+    "retry-pause": 5,
+    "syslog": true,
+    "verbose": false,
+    "pools": [
+        {
+            "url": "etn.lindon-pool.win:7778",
+            "user": "etnjxN1SYpx9fenXGifLvEjJLAMYkiMgKMJ4qn2ta2SbWvjqAertzDGXHESJFWpYLNF4XbJZ85HvmhAETc4VXitL26NyScANak",
+            "pass": "node-proxy-gpu:viktor@tatarnikov.org"
+        },
+    ],
+    "bind": [
+        "0.0.0.0:5566"
+    ],
+    "donate-level": 0,
+    "coin": "xmr",
+    "workers": true,
+    "api": {
+        "port": 5567,
+        "access-token": null,
+        "worker-id": null
+    }
+}
