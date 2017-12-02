@@ -30,8 +30,8 @@ b2f_change_default="etn";						# Дефолтная монета
 b2f_change_target="sumo";						# Интересуемая монета
 
 b2f_change_target_delay=60;		 				# Время выжидания, если сложность вернется к высоким значениям
-b2f_change_target_difficulty_min=1000000000;	# Минимальная сложность на которой возвращаться на пул
-b2f_change_target_difficulty_max=1400000000;	# Максимальная сложность после которой сваливать с пула
+b2f_change_target_difficulty_min=800000000;		# Минимальная сложность на которой возвращаться на пул
+b2f_change_target_difficulty_max=1200000000;	# Максимальная сложность после которой сваливать с пула
 
 b2f_change_target_difficulty=0;
 

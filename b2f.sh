@@ -75,34 +75,26 @@ main_loop() {
 		
 		b2f_term_log "normal" "Logic: target ${esc_color_green}${b2f_change_target}${esc_normal}, default ${esc_color_green}${b2f_change_default}${esc_normal}, diff_current ${esc_color_green}${b2f_change_target_difficulty}${esc_normal} diff_min ${esc_color_red}${b2f_change_target_difficulty_min}${esc_normal}, diff_max ${esc_color_red}${b2f_change_target_difficulty_max}${esc_normal}";
 		
-		# ${b2f_change_target_difficulty} > ${b2f_change_target_difficulty_max}
-		if [ ${b2f_change_target_difficulty} -gt ${b2f_change_target_difficulty_max} ]; then
-		    if [ ! "${b2f_current_coin}" = "${b2f_change_target}" ]; then
-				b2f_term_log "normal" "1: Остаемся на ${esc_color_green}${b2f_change_default}${esc_normal}.";
-		    else
+		
+		if [ "${b2f_current_coin}" = "${b2f_change_target}" ]; then
+			# Мы на назначенном пуле
+			
+			if [ ${b2f_change_target_difficulty} -gt ${b2f_change_target_difficulty_max} ]; then
+				# Сложность больше порога, уходим на дефолтный пул
 				b2f_proxy_activate "${b2f_change_default}";
-		    fi;
-		    
-		    return;
-		fi;
-		
-		# ${b2f_change_target_difficulty} < ${b2f_change_target_difficulty_max}
-		if [ ${b2f_change_target_difficulty} -lt ${b2f_change_target_difficulty_min} ]; then
-		    if [ "${b2f_current_coin}" = "${b2f_change_target}" ]; then
-				b2f_term_log "normal" "2: Остаемся на ${esc_color_green}${b2f_change_target}${esc_normal}.";
-		    else
-		    
+			fi;
+		elif [ "${b2f_current_coin}" = "${b2f_change_default}" ]; then
+			# Мы на пуле по умолчанию
+			
+			if [ ${b2f_change_target_difficulty} -lt ${b2f_change_target_difficulty_min} ]; then
+				# Сложность меньше порога, переходими на пул назначения
 				b2f_proxy_activate "${b2f_change_target}";
-		    fi;
-		    
-		    return;
-		fi;
-		
-		if [ ! "${b2f_current_coin}" = "${b2f_change_target}" ]; then
-		    b2f_proxy_activate "${b2f_change_target}";
+			fi;
 		else
-		    b2f_term_log "normal" "3: Остаемся на ${esc_color_green}${b2f_change_default}${esc_normal}.";
-		fi;
+			b2f_term_log "error" "Ошибка определения текушего назначения, выходим.";
+			exit 1;
+	    fi;
+
 	else
 		b2f_term_log "normal" "Автоматическое переключение ${esc_color_red}отключено${esc_normal}."
 	fi;
