@@ -46,7 +46,7 @@ main_loop() {
 	b2f_sumo_block_check;
 	b2f_xmr_block_check;
 	
-	b2f_current_coin=$(basename $(readlink ./config-cpu.json) | awk -F\. '{ print $2}');
+	b2f_current_coin=$(basename $(readlink "${path}/config-cpu.json") | awk -F\. '{ print $2}');
 	
 	b2f_term_log "normal" "Сейчас $(date).";
 	b2f_term_log "normal" "Текушее направление для ${esc_color_green}${b2f_current_coin}${esc_normal}.";
@@ -74,10 +74,11 @@ main_loop() {
 		esac;
 		
 		b2f_term_log "normal" "Logic: target ${esc_color_green}${b2f_change_target}${esc_normal}, default ${esc_color_green}${b2f_change_default}${esc_normal}, diff_current ${esc_color_green}${b2f_change_target_difficulty}${esc_normal} diff_min ${esc_color_red}${b2f_change_target_difficulty_min}${esc_normal}, diff_max ${esc_color_red}${b2f_change_target_difficulty_max}${esc_normal}";
-	
+		
+		# ${b2f_change_target_difficulty} > ${b2f_change_target_difficulty_max}
 		if [ ${b2f_change_target_difficulty} -gt ${b2f_change_target_difficulty_max} ]; then
 		    if [ ! "${b2f_current_coin}" = "${b2f_change_target}" ]; then
-				b2f_term_log "normal" "Остаемся на ${esc_color_green}${b2f_change_default}${esc_normal}.";
+				b2f_term_log "normal" "1: Остаемся на ${esc_color_green}${b2f_change_default}${esc_normal}.";
 		    else
 				b2f_proxy_activate "${b2f_change_default}";
 		    fi;
@@ -85,10 +86,12 @@ main_loop() {
 		    return;
 		fi;
 		
+		# ${b2f_change_target_difficulty} < ${b2f_change_target_difficulty_max}
 		if [ ${b2f_change_target_difficulty} -lt ${b2f_change_target_difficulty_min} ]; then
 		    if [ "${b2f_current_coin}" = "${b2f_change_target}" ]; then
-				b2f_term_log "normal" "Остаемся на ${esc_color_green}${b2f_change_target}${esc_normal}.";
+				b2f_term_log "normal" "2: Остаемся на ${esc_color_green}${b2f_change_target}${esc_normal}.";
 		    else
+		    
 				b2f_proxy_activate "${b2f_change_target}";
 		    fi;
 		    
@@ -98,7 +101,7 @@ main_loop() {
 		if [ ! "${b2f_current_coin}" = "${b2f_change_target}" ]; then
 		    b2f_proxy_activate "${b2f_change_target}";
 		else
-		    b2f_term_log "normal" "Остаемся на ${esc_color_green}${b2f_change_default}${esc_normal}.";
+		    b2f_term_log "normal" "3: Остаемся на ${esc_color_green}${b2f_change_default}${esc_normal}.";
 		fi;
 	else
 		b2f_term_log "normal" "Автоматическое переключение ${esc_color_red}отключено${esc_normal}."

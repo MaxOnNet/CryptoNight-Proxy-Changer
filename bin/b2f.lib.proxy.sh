@@ -32,12 +32,11 @@ b2f_proxy_change_auto_lock_unset() {
 	rm -f ${b2f_proxy_change_auto_lock};
 };
 
-
 b2f_proxy_report() {
 	local miners_cpu=$(curl "${b2f_proxy_api_cpu}" 2> /dev/null | python -c "import sys, json; js=json.load(sys.stdin); print js['miners']['now']");
 	local miners_gpu=$(curl "${b2f_proxy_api_gpu}" 2> /dev/null | python -c "import sys, json; js=json.load(sys.stdin); print js['miners']['now']");
-	local miners_gpu_l=$(curl "${b2f_proxy_api_cpu}/workers.json" 2> /dev/null | python -c "import sys, json; js=json.load(sys.stdin); workers = [ worker[0] for worker in js['workers'] if worker[0] != '' ]; print ' '.join(workers)");
-	local miners_cpu_l=$(curl "${b2f_proxy_api_gpu}/workers.json" 2> /dev/null | python -c "import sys, json; js=json.load(sys.stdin); workers = [ worker[0] for worker in js['workers'] if worker[0] != '' ]; print ' '.join(workers)");
+	local miners_cpu_l=$(curl "${b2f_proxy_api_cpu}/workers.json" 2> /dev/null | python -c "import sys, json; js=json.load(sys.stdin); workers = [ worker[0] for worker in js['workers'] if worker[0] != '' ]; print ' '.join(workers)");
+	local miners_gpu_l=$(curl "${b2f_proxy_api_gpu}/workers.json" 2> /dev/null | python -c "import sys, json; js=json.load(sys.stdin); workers = [ worker[0] for worker in js['workers'] if worker[0] != '' ]; print ' '.join(workers)");
 	
 	echo "Miners GPU [ ${esc_color_green}${miners_gpu}${esc_normal} ]: ${esc_color_green}${miners_gpu_l}${esc_normal}";
 	echo "Miners CPU [ ${esc_color_green}${miners_cpu}${esc_normal} ]: ${esc_color_green}${miners_cpu_l}${esc_normal}";
@@ -51,11 +50,15 @@ b2f_proxy_activate() {
 	
 	if [[ -f "${path}/proxy.configs/config.${b2f_coin}.lindon.cpu.json"  &&  -f "${path}/proxy.configs/config.${b2f_coin}.lindon.gpu.json" ]]; then
 		for b2f_type in cpu gpu; do
-			rm "${path}/config-${b2f_type}.json";
-			ln -s "${path}/proxy.configs/config.${b2f_coin}.lindon.${b2f_type}.json" "${path}/config-${b2f_type}.json";
-
-			b2f_term_log "warning" "Перезапуск xmr-proxy-${b2f_type}.";
-			systemctl restart "xmr-proxy-${b2f_type}";
+			current=$(basename $(readlink "${path}/config-${b2f_type}.json") | awk -F\. '{ print $2}');
+			
+			if [ ! "${current}" = "${b2f_coin}" ]; then
+				rm "${path}/config-${b2f_type}.json";
+				ln -s "${path}/proxy.configs/config.${b2f_coin}.lindon.${b2f_type}.json" "${path}/config-${b2f_type}.json";
+	
+				b2f_term_log "warning" "Перезапуск xmr-proxy-${b2f_type}.";
+				systemctl restart "xmr-proxy-${b2f_type}";
+			fi;
 		done;
 	else
 		b2f_term_log "error" "Смена назначения на ${b2f_coin} невозможна, конфиги не найдены.";
